@@ -40,6 +40,7 @@ enum planck_keycodes {
 
 #define LOW_ESC LT(_LOWER, KC_ESC)
 #define UP_ENT LT(_RAISE, KC_ENT)
+#define NAV MO(_NAV)
 #define SPC_TAB SHIFT_NO(KC_SPC, KC_TAB)
 #define ENT_ESC SHIFT_NO(KC_ENT, KC_ESC)
 #define BK_DEL SHIFT_NO(KC_BSPC, KC_DEL)
@@ -77,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_NO,    KC_P,     KC_U,     KC_C,     KC_J,     KC_NO,    KC_NO,    KC_K,     KC_L,     KC_D,     KC_W,     KC_NO,
   KC_UNDS,  HOME_N,   HOME_I,   HOME_S,   KC_B,     KC_NO,    KC_NO,    KC_V,     HOME_H,   HOME_T,   HOME_R,   KC_X,
   HOME_A,   KC_NO,    KC_Y,     KC_F,     KC_NO,    BK_DEL,   KC_TAB,   KC_NO,    KC_M,     KC_G,     KC_NO,    HOME_O,
-  KC_NO,    KC_NO,    KC_NO,    LOW_ESC,  KC_E,     KC_NO,    KC_NO,    KC_SPC,   UP_ENT,  KC_NO,    KC_NO,    KC_NO
+  KC_NO,    KC_NO,    KC_NO,    LOW_ESC,  KC_E,     KC_NO,    KC_NO,    KC_SPC,   UP_ENT,   KC_NO,    KC_NO,    KC_NO
 ),
 
 /* Lower
@@ -92,10 +93,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_planck_grid(
-    KC_NO,   KC_F3,   KC_F4,  KC_F5,  KC_F6,  KC_NO, KC_NO, KC_F7,  KC_F8,   KC_F9,  KC_F10,   KC_NO,
-    KC_F2,   KC_AT,   KC_EXLM,   KC_,   KC_F8,   _______, KC_NO,   KC_PPLS,  KC_P4,   KC_P5,  KC_P6,   KC_PAST,
-    KC_F1,   KC_NO,   KC_PIPE,   KC_F3,   KC_F4,   _______, _______, KC_PMNS,  KC_P1,   KC_P2,  KC_P3,   KC_PSLS,
-    KC_NO, KC_NO,   KC_NO,   KC_NO,   _______, SPCSFT,  SPCSFT,  _______,  ENTALT,  KC_P0,  KC_PDOT, KC_EQL
+  KC_NO,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_NO,    KC_NO,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_NO,
+  KC_F2,    KC_AT,    KC_EXLM,  KC_QUOT,  KC_GRV,   KC_NO,    KC_NO,    KC_TILD,  KC_DQUO,  KC_QUES,  KC_DLR,   KC_F11,
+  KC_F1,    KC_NO,    KC_PIPE,  KC_AMPR,  KC_NO,    KC_NO,    KC_COLN,  KC_NO,    KC_HASH,  KC_BSLS,  KC_NO,    KC_F12,
+  KC_NO,    KC_NO,    KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_SCLN,  NAV,      KC_NO,    KC_NO,    KC_NO
 ),
 
 /* Raise
@@ -110,10 +111,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_planck_grid(
-    KC_NO,   KC_NO,   KC_TILD, KC_PEQL, KC_LCBR, _______, KC_DEL,  KC_RCBR,  KC_AMPR, KC_ASTR, KC_UNDS, KC_NO,
-    KC_NO,   KC_NO,   KC_GRV,  KC_GT,   KC_LBRC, _______, KC_NO,   KC_RBRC,  KC_DLR,  KC_PERC, KC_CIRC, KC_BSLS,
-    KC_NO,   KC_NO,   KC_PIPE, KC_PMNS, KC_LPRN, _______, _______, KC_RPRN,  KC_EXLM, KC_AT,   KC_HASH, KC_SLSH,
-    KC_NLCK, KC_NO,   KC_NO,   KC_NO,   _______, SPCSFT,  SPCSFT,  _______,  ENTALT,  KC_NO,   KC_NO,   KC_NO
+  KC_NO,    KC_LABK,  KC_LCBR,  KC_LPRN,  KC_LBRC,  KC_NO,    KC_NO,    KC_RBRC,  KC_RPRN,  KC_RCBR,  KC_RABK,  KC_NO,
+  KC_CIRC,  KC_7,     KC_1,     KC_3,     KC_5,     KC_NO,    KC_NO,    KC_4,     KC_2,     KC_0,     KC_6,     KC_EQL,
+  KC_9,     KC_NO,    KC_PLUS,  KC_MINS,  KC_NO,    KC_COMM,  KC_NO,    KC_NO,    KC_ASTR,  KC_SLSH,  KC_NO,    KC_8,
+  KC_NO,    KC_NO,    KC_NO,    NAV,      KC_DOT,   KC_NO,    KC_NO,    KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO
 ),
 
 /* Navigation (Lower + Raise)
