@@ -17,33 +17,20 @@
 #include QMK_KEYBOARD_H
 #include "muse.h"
 
-#ifdef AUDIO_ENABLE
-  float plover_song[][2]     = SONG(PLOVER_SOUND);
-  float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
-#endif
-
 enum planck_layers {
-  _ANISBVHTRO,
-  _QWERTY,
-  _LOWER,
-  _RAISE,
-  _MOUSE,
-  _BACKLIT,
-  _NAV
+    _ANISBVHTRO,
+    _LOWER,
+    _RAISE,
+    _NAV
 };
 
 enum planck_keycodes {
-  QWERTY = SAFE_RANGE,
-  MOUSE,
-  BACKLIT
+    ANISBVHTRO = SAFE_RANGE
 };
 
 #define LOW_ESC LT(_LOWER, KC_ESC)
 #define UP_ENT LT(_RAISE, KC_ENT)
-#define NAV MO(_NAV)
-#define SPC_TAB SHIFT_NO(KC_SPC, KC_TAB)
-#define ENT_ESC SHIFT_NO(KC_ENT, KC_ESC)
-#define BK_DEL SHIFT_NO(KC_BSPC, KC_DEL)
+
 #define HOME_A LCTL_T(KC_A)
 #define HOME_N LALT_T(KC_N)
 #define HOME_I LGUI_T(KC_I)
@@ -53,12 +40,15 @@ enum planck_keycodes {
 #define HOME_R LALT_T(KC_R)
 #define HOME_O RCTL_T(KC_O)
 
-const uint16_t PROGMEM q_combo[] = {KC_O, KC_X, COMBO_END};
-const uint16_t PROGMEM z_combo[] = {KC_A, KC_UNDS, COMBO_END};
-combo_t key_combos[COMBO_COUNT] = {
-    COMBO(q_combo, KC_Q),
-    COMBO(z_combo, KC_Z),
-};
+#define HOME_9 LCTL_T(KC_9)
+#define HOME_7 LALT_T(KC_7)
+#define HOME_1 LGUI_T(KC_1)
+#define HOME_3 LSFT_T(KC_3)
+#define HOME_2 RSFT_T(KC_2)
+#define HOME_0 RGUI_T(KC_0)
+#define HOME_6 LALT_T(KC_6)
+#define HOME_8 RCTL_T(KC_8)
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -68,17 +58,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   _  |   N  |   I  |   S  |   B  |      |      |   V  |   H  |   T  |   R  |   X  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   A  |      |   Y  |   F  |      |  BS  |  TAB |      |   M  |   G  |      |   O  |
+ * |   A  |      |   Y  |   F  |      |      |      |      |   M  |   G  |      |   O  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |  ESC |   E  |             |  Spc |  Ent |      |      |      |
+ * |   Z  |      |  BS  |EscSym|   E  |             |  SPC |EntNum|  TAB |      |   Q  |
  * `-----------------------------------------------------------------------------------'
  */
 [_ANISBVHTRO] = LAYOUT_planck_grid(
 
-  KC_NO,    KC_P,     KC_U,     KC_C,     KC_J,     KC_NO,    KC_NO,    KC_K,     KC_L,     KC_D,     KC_W,     KC_NO,
-  KC_UNDS,  HOME_N,   HOME_I,   HOME_S,   KC_B,     KC_NO,    KC_NO,    KC_V,     HOME_H,   HOME_T,   HOME_R,   KC_X,
-  HOME_A,   KC_NO,    KC_Y,     KC_F,     KC_NO,    BK_DEL,   KC_TAB,   KC_NO,    KC_M,     KC_G,     KC_NO,    HOME_O,
-  KC_NO,    KC_NO,    KC_NO,    LOW_ESC,  KC_E,     KC_NO,    KC_NO,    KC_SPC,   UP_ENT,   KC_NO,    KC_NO,    KC_NO
+    KC_NO,      KC_P,       KC_U,       KC_C,       KC_J,       KC_NO,      KC_NO,      KC_K,       KC_L,       KC_D,       KC_W,       KC_NO,
+    KC_UNDS,    HOME_N,     HOME_I,     HOME_S,     KC_B,       KC_NO,      KC_NO,      KC_V,       HOME_H,     HOME_T,     HOME_R,     KC_X,
+    HOME_A,     KC_NO,      KC_Y,       KC_F,       KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_M,       KC_G,       KC_NO,      HOME_O,
+    KC_Z,       KC_NO,      KC_BSPC,    LOW_ESC,    KC_E,       KC_NO,      KC_NO,      KC_SPC,     UP_ENT,     KC_TAB,     KC_NO,      KC_Q
 ),
 
 /* Lower
@@ -87,16 +77,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  F2  |  @   |   !  |   '  |   `  |      |      |   ~  |   "  |   ?  |   $  |  F11 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  F1  |      |   |  |   &  |      |      |   :  |      |   #  |   \  |      |  F12 |
+ * |  F1  |      |   |  |   &  |      |      |      |      |   #  |   \  |      |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      | Base |      |             |   ;  |  Nav |      |      |      |
+ * |      |      |      | Base |      |             |   ;  |  Nav |   :  |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_planck_grid(
-  KC_NO,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_NO,    KC_NO,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_NO,
-  KC_F2,    KC_AT,    KC_EXLM,  KC_QUOT,  KC_GRV,   KC_NO,    KC_NO,    KC_TILD,  KC_DQUO,  KC_QUES,  KC_DLR,   KC_F11,
-  KC_F1,    KC_NO,    KC_PIPE,  KC_AMPR,  KC_NO,    KC_NO,    KC_COLN,  KC_NO,    KC_HASH,  KC_BSLS,  KC_NO,    KC_F12,
-  KC_NO,    KC_NO,    KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO,    KC_SCLN,  NAV,      KC_NO,    KC_NO,    KC_NO
+    KC_NO,      KC_F3,      KC_F4,      KC_F5,      KC_F6,      KC_NO,      KC_NO,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,
+    KC_F2,      KC_AT,      KC_EXLM,    KC_QUOT,    KC_GRV,     KC_NO,      KC_NO,      KC_TILD,    KC_DQUO,    KC_QUES,    KC_DLR,     KC_F11,
+    KC_F1,      KC_NO,      KC_PIPE,    KC_AMPR,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_HASH,    KC_BSLS,    KC_NO,      KC_F12,
+    KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_NO,      KC_NO,      KC_NO,      KC_SCLN,    KC_TRNS,    KC_COLN,    KC_NO,      KC_NO
 ),
 
 /* Raise
@@ -105,165 +95,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ^  |   7  |   1  |   3  |   5  |      |      |   4  |   2  |   0  |   6  |   =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   9  |      |   +  |   -  |      |   ,  |      |      |   *  |   /  |      |   8  |
+ * |   9  |      |   +  |   -  |      |      |      |      |   *  |   /  |      |   8  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |  Nav |   .  |             |      | Base |      |      |      |
+ * |      |      |   ,  |  Nav |   .  |             |      | Base |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_planck_grid(
-  KC_NO,    KC_LABK,  KC_LCBR,  KC_LPRN,  KC_LBRC,  KC_NO,    KC_NO,    KC_RBRC,  KC_RPRN,  KC_RCBR,  KC_RABK,  KC_NO,
-  KC_CIRC,  KC_7,     KC_1,     KC_3,     KC_5,     KC_NO,    KC_NO,    KC_4,     KC_2,     KC_0,     KC_6,     KC_EQL,
-  KC_9,     KC_NO,    KC_PLUS,  KC_MINS,  KC_NO,    KC_COMM,  KC_NO,    KC_NO,    KC_ASTR,  KC_SLSH,  KC_NO,    KC_8,
-  KC_NO,    KC_NO,    KC_NO,    NAV,      KC_DOT,   KC_NO,    KC_NO,    KC_NO,    KC_TRNS,  KC_NO,    KC_NO,    KC_NO
+    KC_NO,      KC_LABK,    KC_LCBR,    KC_LPRN,    KC_LBRC,    KC_NO,      KC_NO,      KC_RBRC,    KC_RPRN,    KC_RCBR,    KC_RABK,    KC_NO,
+    KC_CIRC,    HOME_7,     HOME_1,     HOME_3,     KC_5,       KC_NO,      KC_NO,      KC_4,       HOME_2,     HOME_0,     HOME_6,     KC_EQL,
+    HOME_9,     KC_NO,      KC_PLUS,    KC_MINS,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_ASTR,    KC_SLSH,    KC_NO,      HOME_8,
+    KC_NO,      KC_NO,      KC_COMM,    KC_TRNS,    KC_DOT,     KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_NO,      KC_NO,      KC_NO
 ),
 
-/* Navigation (Lower + Raise)
+/* Nav (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
  * |      | BrtUp| BrtDw| Mute | VolUp|      |      | PgUp | Bk   |  Up  |  Del |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |  ALT |  GUI | Shift| VolDw|      |      | PgDw | Left | Down | Right|      |
+ * |      |  ALT |  GUI | Shift| VolDw|      |      | PgDw | Left | Down | Right|  HUI |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | CTRL |      |      |      |      |      |      |      | Home |  End |      | Mouse|
+ * | CTRL |      |RGBTOG|RGBMOD|      |      |      |      | Home |  End |      |  SAI |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      | Base |      |             |      | Base |      |      |      |
+ * |      |      |      | Base |      |             |      | Base |      |      |  VAI |
  * `-----------------------------------------------------------------------------------'
  */
 [_NAV] = LAYOUT_planck_grid(
-    KC_NO,   KC_UP,   KC_NO,   KC_NO,   KC_NO,   _______, KC_DEL, KC_INS,  KC_PSCR, KC_NO,   KC_NO,   KC_NO,
-    KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   KC_NO,   _______, KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_NO,
-    KC_NO,   KC_UP,   KC_NO,   KC_NO,   KC_NO,   _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_NO,
-    KC_NO,   KC_UP,   KC_NO,   KC_NO,   _______, KC_SPC,  KC_SPC,  _______, KC_ENT,   KC_UP,   KC_NO,   KC_NO
-),
-
-/* Mouse
- * ,-----------------------------------------------------------------------------------.
- * |      |      |MoBut1|MoBut3|MoBut2|      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |MoLeft|MoDown| MoUp |MoRght|      |      | Play | Stop | Prev | Next |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |MoAcc0|MoAcc1|MoAcc2|      |      | BrtUp|BrtDwn|      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |QWERTY|      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_MOUSE] = LAYOUT_planck_grid(
-    KC_NO,   KC_NO,   KC_BTN1, KC_BTN3, KC_BTN2, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-    KC_NO,   KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_NO,   KC_NO,   KC_MPLY, KC_MSTP, KC_MPRV, KC_MNXT, KC_NO,
-    KC_NO,   KC_NO,   KC_MS_ACCEL0, KC_MS_ACCEL1, KC_MS_ACCEL2, KC_NO, KC_NO, KC_BRIU, KC_BRID, KC_NO, KC_NO, KC_NO,
-    KC_NO,   KC_NO,   KC_NO,   QWERTY,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
-),
-
-/* BackLight
- * ,-----------------------------------------------------------------------------------.
- * |      |      | SAT- | SAT+ | HUE+ |      |      | BLUp |      |      |      |AudTog|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |RgbMoD|RgbMoU|RgbTog| HUE- |      |      | BLDn | BLTog| BLCyc| BLBre|      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |RgbVad|RgbVai|      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |QWERTY|      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_BACKLIT] = LAYOUT_planck_grid(
-    KC_NO,   KC_NO,   RGB_SAD, RGB_SAI, RGB_HUI, KC_NO,   KC_NO,   BL_INC,  KC_NO,   KC_NO,   KC_NO,   AU_TOG,
-    KC_NO,   RGB_RMOD,RGB_MOD, RGB_TOG, RGB_HUD, KC_NO,   KC_NO,   BL_DEC,  BL_TOGG, BL_STEP, BL_BRTG, KC_NO,
-    KC_NO,   RGB_M_R,   KC_NO,   RGB_VAD, RGB_VAI, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-    QWERTY,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
+    KC_NO,      KC_BRIU,    KC_BRID,    KC_MUTE,    KC_VOLU,    KC_NO,      KC_NO,      KC_PGUP,    KC_BSPC,    KC_UP,      KC_DEL,     KC_NO,
+    KC_NO,      KC_LALT,    KC_LGUI,    KC_LSFT,    KC_VOLD,    KC_NO,      KC_NO,      KC_PGDN,    KC_LEFT,    KC_DOWN,    KC_RGHT,    RGB_HUI,
+    KC_LCTL,    RGB_TOG,    RGB_MOD,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_HOME,    KC_END,     KC_NO,      RGB_SAI,
+    KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_TRNS,    KC_NO,      KC_NO,      RGB_VAI
 ),
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _NAV);
+    return update_tri_layer_state(state, _LOWER, _RAISE, _NAV);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case QWERTY:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY);
-      }
-      return false;
-      break;
-    case MOUSE:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_MOUSE);
-      }
-      return false;
-      break;
-    case BACKLIT:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_BACKLIT);
-      }
-      return false;
-      break;
-  }
-  return true;
-}
-
-bool muse_mode = false;
-uint8_t last_muse_note = 0;
-uint16_t muse_counter = 0;
-uint8_t muse_offset = 70;
-uint16_t muse_tempo = 50;
-
-void dip_switch_update_user(uint8_t index, bool active) {
-    switch (index) {
-        case 0: {
-#ifdef AUDIO_ENABLE
-            static bool play_sound = false;
-#endif
-            if (active) {
-#ifdef AUDIO_ENABLE
-                if (play_sound) { PLAY_SONG(plover_song); }
-#endif
-                layer_on(_NAV);
-            } else {
-#ifdef AUDIO_ENABLE
-                if (play_sound) { PLAY_SONG(plover_gb_song); }
-#endif
-                layer_off(_NAV);
-            }
-#ifdef AUDIO_ENABLE
-            play_sound = true;
-#endif
-            break;
+    switch (keycode) {
+        case ANISBVHTRO:
+        if (record->event.pressed) {
+            set_single_persistent_default_layer(_ANISBVHTRO);
         }
-        case 1:
-            if (active) {
-                muse_mode = true;
-            } else {
-                muse_mode = false;
-            }
+        return false;
+        break;
     }
-}
-
-void matrix_scan_user(void) {
-#ifdef AUDIO_ENABLE
-    if (muse_mode) {
-        if (muse_counter == 0) {
-            uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
-            if (muse_note != last_muse_note) {
-                stop_note(compute_freq_for_midi_note(last_muse_note));
-                play_note(compute_freq_for_midi_note(muse_note), 0xF);
-                last_muse_note = muse_note;
-            }
-        }
-        muse_counter = (muse_counter + 1) % muse_tempo;
-    } else {
-        if (muse_counter) {
-            stop_all_notes();
-            muse_counter = 0;
-        }
-    }
-#endif
-}
-
-bool music_mask_user(uint16_t keycode) {
-  switch (keycode) {
-    case RAISE:
-    case LOWER:
-      return false;
-    default:
-      return true;
-  }
+    return true;
 }
